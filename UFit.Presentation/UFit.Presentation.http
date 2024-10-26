@@ -1,0 +1,6 @@
+@UFit.Presentation_HostAddress = http://localhost:5114
+
+GET {{UFit.Presentation_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
