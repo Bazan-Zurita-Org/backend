@@ -1,5 +1,6 @@
 using UFit.Application;
 using UFit.Infrastructure;
+using UFit.Presentation.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,5 +20,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.AddTraineeApi();
 
 app.Run();

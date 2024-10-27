@@ -1,5 +1,6 @@
 ﻿using UFit.Application.Abstractions;
 using UFit.Application.Abstractions.Messaging;
+using UFit.Domain.Abstractions;
 using UFit.Domain.Trainees;
 
 namespace UFit.Application.Trainees.Create;
@@ -14,9 +15,9 @@ internal sealed class CreateTraineeCommandHandler : ICommandHandler<CreateTraine
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Guid> Handle(CreateTraineeCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(CreateTraineeCommand request, CancellationToken cancellationToken)
     {
-        var trainee = Trainee.Create(
+        var result = Trainee.Create(
             new Name(request.Trainee.FirstName, request.Trainee.LastName),
             new Measurements(request.Trainee.Height, request.Trainee.Weight),
             new Gender(request.Trainee.Gender),
@@ -26,10 +27,10 @@ internal sealed class CreateTraineeCommandHandler : ICommandHandler<CreateTraine
             new FitnessGoal(request.Trainee.FitnessGoal),
             new TargetWeight(request.Trainee.TargetWeigth));
 
-        _traineeRepository.Add(trainee);
+        _traineeRepository.Add(result.Value);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return trainee.Id;
+        return result.Value.Id;
     }
 }

@@ -38,7 +38,7 @@ public sealed class Trainee : Entity
     public TargetWeight TargetWeight { get; private set; }
     public Points Points { get; private set; }
 
-    public static Trainee Create(
+    public static Result<Trainee> Create(
         Name name,
         Measurements measurements,
         Gender gender,
