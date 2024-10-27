@@ -7,6 +7,7 @@ public abstract class Entity
     {
         Id = id;
     }
+    protected Entity() { }
     public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.ToList();
 
     public void RaiseDomainEvent(IDomainEvent domainEvent)

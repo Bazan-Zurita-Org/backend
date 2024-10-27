@@ -4,6 +4,7 @@ namespace UFit.Domain.Trainees;
 
 public sealed class Trainee : Entity
 {
+    private Trainee() { }
     private Trainee(
         Guid id,
         Name name,
@@ -27,7 +28,6 @@ public sealed class Trainee : Entity
         TargetWeight = targetWeight;
         Points = points;
     }
-
     public Name Name { get; private set; }
     public Measurements Measurements { get; private set; }
     public Gender Gender { get; private set; }
