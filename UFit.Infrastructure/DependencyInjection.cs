@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using UFit.Application.Abstractions;
+using UFit.Application.Abstractions.Data;
 using UFit.Domain.Trainees;
 using UFit.Infrastructure.Repositories;
 
@@ -17,6 +18,8 @@ public static class DependencyInjection
             conf.UseNpgsql(connectionString).UseSnakeCaseNamingConvention());
 
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
+
+        services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
         services.AddScoped<ITraineeRepository, TraineeRepository>();
 

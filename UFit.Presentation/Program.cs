@@ -1,6 +1,7 @@
 using UFit.Application;
 using UFit.Infrastructure;
 using UFit.Presentation.Endpoints;
+using UFit.Presentation.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    app.ApplyMigrations();
 }
 
 app.UseHttpsRedirection();

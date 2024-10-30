@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Routing;
 using UFit.Application.Trainees.Create;
+using UFit.Application.Trainees.GetById;
 
 namespace UFit.Presentation.Endpoints;
 
@@ -24,9 +25,17 @@ public static class TraineeEndpoints
                 result.Value);
         });
 
-        app.MapGet("/api/trainees/{id}", (Guid id, ISender sender) =>
+        app.MapGet("/api/trainees/{id}", async (Guid id, ISender sender) =>
         {
-            return Results.Ok(id);
+            var query = new GetTraineeByIdQuery(id);
+            var result = await sender.Send(query);
+
+            if (result.IsFailure)
+            {
+                return Results.BadRequest(result.Error);
+            }
+
+            return Results.Ok(result.Value);
         }).WithName("GetTraineeById");
     }
 }

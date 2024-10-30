@@ -4,6 +4,8 @@ services:
     build:
       context: .
       dockerfile: UFit.Presentation/Dockerfile
+    depends_on: 
+      - ufit.database
 
   ufit.database:
    image: postgres
@@ -14,4 +16,7 @@ services:
     - POSTGRES_PASSWORD=password
    ports:
     - "5432:5432"
+   volumes:
+    - ./.containers/data:/var/lib/postgresql/data
+  
    
