@@ -4,6 +4,7 @@ using UFit.Domain.Shared;
 namespace UFit.Domain.Workouts;
 public sealed class Exercise : Entity
 {
+    private Exercise() { }
     internal Exercise(
         Guid id,
         Name name,

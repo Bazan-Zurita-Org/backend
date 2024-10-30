@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using UFit.Application.Abstractions;
 using UFit.Application.Abstractions.Data;
 using UFit.Domain.Trainees;
+using UFit.Domain.Workouts;
 using UFit.Infrastructure.Repositories;
 
 namespace UFit.Infrastructure;
@@ -22,6 +23,7 @@ public static class DependencyInjection
         services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
         services.AddScoped<ITraineeRepository, TraineeRepository>();
+        services.AddScoped<IWorkoutRepository, WorkoutRepository>();
 
         return services;
     }
