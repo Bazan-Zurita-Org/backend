@@ -37,6 +37,13 @@ public static class DependencyInjection
             Credential = GoogleCredential.FromFile("firebase-ufit.json")
         });
 
+        services.AddHttpClient<IJwtProvider, JwtProvider>((sp, httpClient) =>
+        {
+            var configuration = sp.GetRequiredService<IConfiguration>();
+
+            httpClient.BaseAddress = new Uri(configuration["Authentication:TokenUri"]!);
+        });
+
         return services;
     }
 }

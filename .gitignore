@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /.containers/data
 /UFit.Presentation/firebase-ufit.json
+/UFit.Presentation/appsettings.json
+/UFit.Presentation/appsettings.json
