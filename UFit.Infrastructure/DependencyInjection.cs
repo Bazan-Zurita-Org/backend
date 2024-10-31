@@ -1,5 +1,6 @@
 ﻿using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,20 +17,14 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("Database") 
-            ?? throw new ArgumentNullException("Connection String not provided");
+        AddPersistance(services, configuration);
+        AddAuthentication(services, configuration);
 
-        services.AddDbContext<ApplicationDbContext>(conf => 
-            conf.UseNpgsql(connectionString).UseSnakeCaseNamingConvention());
+        return services;
+    }
 
-        services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
-
-        services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
-
-        services.AddScoped<ITraineeRepository, TraineeRepository>();
-        services.AddScoped<IWorkoutRepository, WorkoutRepository>();
-        services.AddScoped<IExerciseRepository, ExerciseRepository>();
-
+    private static void AddAuthentication(IServiceCollection services, IConfiguration configuration)
+    {
         services.AddSingleton<IAuthenticationService, AuthenticationService>();
 
         FirebaseApp.Create(new AppOptions
@@ -39,11 +34,35 @@ public static class DependencyInjection
 
         services.AddHttpClient<IJwtProvider, JwtProvider>((sp, httpClient) =>
         {
-            var configuration = sp.GetRequiredService<IConfiguration>();
+            var config = sp.GetRequiredService<IConfiguration>();
 
-            httpClient.BaseAddress = new Uri(configuration["Authentication:TokenUri"]!);
+            httpClient.BaseAddress = new Uri(config["Authentication:TokenUri"]!);
         });
 
-        return services;
+        services
+            .AddAuthentication()
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtOptions =>
+            {
+                jwtOptions.Authority = configuration["Authentication:ValidIssuer"];
+                jwtOptions.Audience = configuration["Authentication:Audience"];
+                jwtOptions.TokenValidationParameters.ValidIssuer = configuration["Authentication:ValidIssuer"];
+            });
+    }
+
+    private static void AddPersistance(IServiceCollection services, IConfiguration configuration)
+    {
+        var connectionString = configuration.GetConnectionString("Database")
+                    ?? throw new ArgumentNullException("Connection String not provided");
+
+        services.AddDbContext<ApplicationDbContext>(conf =>
+            conf.UseNpgsql(connectionString).UseSnakeCaseNamingConvention());
+
+        services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
+
+        services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
+
+        services.AddScoped<ITraineeRepository, TraineeRepository>();
+        services.AddScoped<IWorkoutRepository, WorkoutRepository>();
+        services.AddScoped<IExerciseRepository, ExerciseRepository>();
     }
 }

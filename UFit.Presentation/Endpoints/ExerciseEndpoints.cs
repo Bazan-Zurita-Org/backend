@@ -32,6 +32,6 @@ public static class ExerciseEndpoints
             }
 
             return Results.Ok(result.Value);
-        });
+        }).RequireAuthorization();
     }
 }
