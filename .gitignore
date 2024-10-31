@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /.containers/data
+/UFit.Presentation/firebase-ufit.json
