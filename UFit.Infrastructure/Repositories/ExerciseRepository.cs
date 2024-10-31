@@ -7,4 +7,9 @@ internal class ExerciseRepository(ApplicationDbContext context) : IExerciseRepos
     {
         context.Exercises.Add(exercise);
     }
+
+    public async Task<Exercise?> findById(Guid id)
+    {
+        return await context.Exercises.FindAsync(id);
+    }
 }

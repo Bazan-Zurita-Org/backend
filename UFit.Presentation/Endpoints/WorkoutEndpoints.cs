@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using UFit.Application.Workouts.AddExercise;
 using UFit.Application.Workouts.Create;
 using UFit.Application.Workouts.GetById;
 
@@ -33,5 +34,18 @@ public static class WorkoutEndpoints
 
             return Results.Ok(result.Value);
         }).WithName("GetWorkoutById");
+
+        app.MapPost("api/workouts/exercise", async (AddExerciseToWorkoutRequest request, ISender sender) =>
+        {
+            var command = new AddExerciseToWorkoutCommand(request);
+            var result = await sender.Send(command);
+
+            if (result.IsFailure)
+            {
+                return Results.BadRequest(result.Error);
+            }
+
+            return Results.Ok();
+        });
     }
 }
