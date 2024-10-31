@@ -1,4 +1,5 @@
-﻿using UFit.Domain.Workouts;
+﻿using UFit.Application.Exercises.Create;
+using UFit.Domain.Workouts;
 
 namespace UFit.Application.Workouts.GetById;
 
@@ -8,4 +9,16 @@ public sealed record GetWorkoutByIdResponse(
     DateTime Date,
     string Goal,
     DifficultyLevel DifficultyLevel,
-    bool IsCompleted);
+    bool IsCompleted,
+    List<ExerciseResponse> Exercises);
+
+
+public sealed record ExerciseResponse(
+    Guid Id,
+    string Name,
+    int Sets,
+    int Reps,
+    TimeSpan RestTime,
+    string Equipment,
+    string MuscleGroup,
+    string Instructions);

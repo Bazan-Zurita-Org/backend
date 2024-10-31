@@ -18,19 +18,39 @@ internal class GetWorkoutByIdQueryHandler : IQueryHandler<GetWorkoutByIdQuery, G
     {
         var workout = await _applicationDbContext
             .Workouts
-            .FirstOrDefaultAsync(w => w.Id == request.Id);
+            .AsNoTracking()
+            .Where(w => w.Id == request.Id)
+            .Select(workout => new GetWorkoutByIdResponse(
+                workout.Id,
+                workout.Name.Value,
+                workout.Date,
+                workout.Goal.Value,
+                workout.DifficultyLevel,
+                workout.IsCompleted,
+                _applicationDbContext.WorkoutExercises
+                .Where(we => we.WorkoutId == workout.Id)
+                .Join(
+                    _applicationDbContext.Exercises,
+                    we => we.ExerciseId,
+                    e => e.Id,
+                    (we, e) => new ExerciseResponse(
+                        e.Id,
+                        e.Name.Value,
+                        we.Sets.Value,
+                        we.Reps.Value,
+                        e.RestTime,
+                        e.Equipment.Value,
+                        e.MuscleGroup.Value,
+                        e.Instructions.Value)).ToList()
+                )
+            )
+            .FirstOrDefaultAsync();
 
         if (workout is null)
         {
             return Result.Failure<GetWorkoutByIdResponse>(WorkoutErrors.NotFound);
         }
 
-        return new GetWorkoutByIdResponse(
-            workout.Id,
-            workout.Name.Value,
-            workout.Date,
-            workout.Goal.Value,
-            workout.DifficultyLevel,
-            workout.IsCompleted);
+        return workout;
     }
 }
