@@ -1,9 +1,10 @@
-﻿namespace UFit.Application.Trainees.Create;
+﻿namespace UFit.Application.Trainees.Register;
 
 public sealed record CreateTraineeRequest(
     string FirstName,
     string LastName,
     string Email,
+    string Password,
     decimal Height,
     decimal Weight,
     string Gender,

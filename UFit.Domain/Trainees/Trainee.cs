@@ -15,7 +15,8 @@ public sealed class Trainee : Entity
         Phone phone,
         FitnessGoal fitnessGoal,
         TargetWeight targetWeight,
-        Points points) 
+        Points points,
+        string identityId) 
         : base(id)
     {
         Name = name;
@@ -27,6 +28,7 @@ public sealed class Trainee : Entity
         FitnessGoal = fitnessGoal;
         TargetWeight = targetWeight;
         Points = points;
+        IdentityId = identityId;
     }
     public Name Name { get; private set; }
     public Measurements Measurements { get; private set; }
@@ -37,6 +39,7 @@ public sealed class Trainee : Entity
     public FitnessGoal FitnessGoal { get; private set; }
     public TargetWeight TargetWeight { get; private set; }
     public Points Points { get; private set; }
+    public string IdentityId { get; }
 
     public static Result<Trainee> Create(
         Name name,
@@ -46,9 +49,21 @@ public sealed class Trainee : Entity
         Email email,
         Phone phone,
         FitnessGoal fitnessGoal,
-        TargetWeight targetWeight)
+        TargetWeight targetWeight,
+        string identityId)
     {
-        var trainee = new Trainee(Guid.NewGuid(), name, measurements, gender, dateOfBirth, email, phone, fitnessGoal, targetWeight, new Points(0));
+        var trainee = new Trainee(
+            Guid.NewGuid(),
+            name,
+            measurements,
+            gender,
+            dateOfBirth,
+            email,
+            phone,
+            fitnessGoal,
+            targetWeight,
+            new Points(0),
+            identityId);
 
         trainee.RaiseDomainEvent(new TraineeCreatedDomainEvent(trainee.Id));
 

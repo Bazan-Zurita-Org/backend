@@ -47,5 +47,8 @@ public class TraineeConfiguration : IEntityTypeConfiguration<Trainee>
 
         builder.HasIndex(t => t.Email)
             .IsUnique();
+
+        builder.HasIndex(t => t.IdentityId)
+            .IsUnique();
     }
 }

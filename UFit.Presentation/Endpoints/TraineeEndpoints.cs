@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Routing;
-using UFit.Application.Trainees.Create;
 using UFit.Application.Trainees.GetById;
+using UFit.Application.Trainees.Register;
 
 namespace UFit.Presentation.Endpoints;
 

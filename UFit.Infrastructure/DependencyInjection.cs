@@ -1,10 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using UFit.Application.Abstractions;
+using UFit.Application.Abstractions.Authentication;
 using UFit.Application.Abstractions.Data;
 using UFit.Domain.Trainees;
 using UFit.Domain.Workouts;
+using UFit.Infrastructure.Authentication;
 using UFit.Infrastructure.Repositories;
 
 namespace UFit.Infrastructure;
@@ -25,6 +29,13 @@ public static class DependencyInjection
         services.AddScoped<ITraineeRepository, TraineeRepository>();
         services.AddScoped<IWorkoutRepository, WorkoutRepository>();
         services.AddScoped<IExerciseRepository, ExerciseRepository>();
+
+        services.AddSingleton<IAuthenticationService, AuthenticationService>();
+
+        FirebaseApp.Create(new AppOptions
+        {
+            Credential = GoogleCredential.FromFile("firebase-ufit.json")
+        });
 
         return services;
     }
