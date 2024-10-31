@@ -24,6 +24,7 @@ public static class DependencyInjection
 
         services.AddScoped<ITraineeRepository, TraineeRepository>();
         services.AddScoped<IWorkoutRepository, WorkoutRepository>();
+        services.AddScoped<IExerciseRepository, ExerciseRepository>();
 
         return services;
     }

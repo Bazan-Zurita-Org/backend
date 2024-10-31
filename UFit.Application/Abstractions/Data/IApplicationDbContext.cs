@@ -8,4 +8,5 @@ public interface IApplicationDbContext
 {
     DbSet<Trainee> Trainees { get; set; }
     DbSet<Workout> Workouts { get; set; }
+    DbSet<Exercise> Exercises { get; set; }
 }

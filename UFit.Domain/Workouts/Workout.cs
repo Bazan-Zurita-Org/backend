@@ -36,20 +36,6 @@ public sealed class Workout : Entity
         return workout;
     }
 
-    public static Result<Exercise> CreateExercise(
-        Name name,
-        Set sets,
-        Rep reps,
-        TimeSpan restTime,
-        Equipment equipment,
-        MuscleGroup muscleGroup,
-        Instructions instructions)
-    {
-        var exercise = new Exercise(Guid.NewGuid(), name, sets, reps, restTime, equipment, muscleGroup, instructions);
-
-        return exercise;
-    }
-
     public void AddExerciseToWorkout(Guid exerciseId, Set sets, Rep reps)
     {
         _workoutExercises.Add(new WorkoutExercise(Id, exerciseId, sets, reps));

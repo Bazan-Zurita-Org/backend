@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using UFit.Application.Workouts.Create;
+using UFit.Application.Workouts.GetById;
 
 namespace UFit.Presentation.Endpoints;
 
@@ -17,7 +18,20 @@ public static class WorkoutEndpoints
                 return Results.BadRequest(result.Error);
             }
 
-            return Results.Ok();
+            return Results.Created("GetWorkoutById", default);
         });
+
+        app.MapGet("api/workouts/{id}", async (Guid id, ISender sender) =>
+        {
+            var query = new GetWorkoutByIdQuery(id);
+            var result = await sender.Send(query);
+
+            if (result.IsFailure)
+            {
+                return Results.BadRequest(result.Error);
+            }
+
+            return Results.Ok(result.Value);
+        }).WithName("GetWorkoutById");
     }
 }

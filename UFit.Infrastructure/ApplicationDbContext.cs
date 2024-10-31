@@ -11,6 +11,7 @@ public class ApplicationDbContext : DbContext, IUnitOfWork, IApplicationDbContex
 
     public DbSet<Trainee> Trainees { get; set; }
     public DbSet<Workout> Workouts { get; set; }
+    public DbSet<Exercise> Exercises { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

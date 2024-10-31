@@ -31,4 +31,18 @@ public sealed class Exercise : Entity
     public Equipment Equipment { get; private set; }
     public MuscleGroup MuscleGroup { get; private set; }
     public Instructions Instructions { get; private set; }
+
+    public static Result<Exercise> Create(
+        Name name,
+        Set sets,
+        Rep reps,
+        TimeSpan restTime,
+        Equipment equipment,
+        MuscleGroup muscleGroup,
+        Instructions instructions)
+    {
+        var exercise = new Exercise(Guid.NewGuid(), name, sets, reps, restTime, equipment, muscleGroup, instructions);
+
+        return exercise;
+    }
 }

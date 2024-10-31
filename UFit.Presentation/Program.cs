@@ -26,5 +26,6 @@ app.UseHttpsRedirection();
 
 app.AddTraineeApi();
 app.AddWorkoutEndpoints();
+app.AddExerciseEndpoints();
 
 app.Run();
