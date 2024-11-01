@@ -2,15 +2,18 @@
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using UFit.Application.Abstractions;
 using UFit.Application.Abstractions.Authentication;
+using UFit.Application.Abstractions.Cache;
 using UFit.Application.Abstractions.Data;
 using UFit.Domain.Trainees;
 using UFit.Domain.Workouts;
 using UFit.Infrastructure.Authentication;
 using UFit.Infrastructure.Repositories;
+using UFit.Infrastructure.Services;
 
 namespace UFit.Infrastructure;
 public static class DependencyInjection
@@ -19,6 +22,13 @@ public static class DependencyInjection
     {
         AddPersistance(services, configuration);
         AddAuthentication(services, configuration);
+
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration.GetConnectionString("Redis");
+        });
+
+        services.AddSingleton<ICacheService, CacheService>();
 
         return services;
     }

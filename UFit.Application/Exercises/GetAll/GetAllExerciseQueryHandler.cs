@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UFit.Application.Abstractions.Cache;
 using UFit.Application.Abstractions.Data;
 using UFit.Application.Abstractions.Messaging;
 using UFit.Application.Workouts.GetById;
@@ -8,15 +9,25 @@ namespace UFit.Application.Exercises.GetAll;
 internal class GetAllExerciseQueryHandler : IQueryHandler<GetAllExerciseQuery, List<ExerciseResponse>>
 {
     private readonly IApplicationDbContext _applicationDdContext;
+    private readonly ICacheService _cacheService;
 
-    public GetAllExerciseQueryHandler(IApplicationDbContext applicationDdContext)
+    public GetAllExerciseQueryHandler(IApplicationDbContext applicationDdContext, ICacheService cacheService)
     {
         _applicationDdContext = applicationDdContext;
+        _cacheService = cacheService;
     }
 
     public async Task<Result<List<ExerciseResponse>>> Handle(GetAllExerciseQuery request, CancellationToken cancellationToken)
     {
-        var exercises = await _applicationDdContext
+        var key = "exercises";
+
+        List<ExerciseResponse> exercises = [];
+
+        var exercisesCached = await _cacheService.GetAsync<List<ExerciseResponse>>(key, cancellationToken);
+
+        if (exercisesCached == null)
+        {
+            exercises = await _applicationDdContext
             .Exercises
             .AsNoTracking()
             .Select(exercise => new ExerciseResponse(
@@ -30,6 +41,11 @@ internal class GetAllExerciseQueryHandler : IQueryHandler<GetAllExerciseQuery, L
                 exercise.Instructions.Value))
             .ToListAsync();
 
-        return exercises;
+            await _cacheService.SetAsync(key, exercises);
+
+            return exercises;
+        }
+
+        return exercisesCached;
     }
 }

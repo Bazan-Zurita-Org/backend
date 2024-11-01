@@ -19,4 +19,10 @@ services:
    volumes:
     - ./.containers/data:/var/lib/postgresql/data
   
+  ufit.cache:
+    image: redis
+    container_name: UFit.Redis
+    restart: always
+    ports:
+      - "6379:6379"
    
