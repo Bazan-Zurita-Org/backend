@@ -26,7 +26,7 @@ public static class TraineeEndpoints
                 result.Value);
         });
 
-        app.MapPost("login", async (LoginCommand request, ISender sender) =>
+        app.MapPost("api/login", async (LoginCommand request, ISender sender) =>
         {
             var command = new LoginCommand(request.Email, request.Password);
             var result = await sender.Send(command);
