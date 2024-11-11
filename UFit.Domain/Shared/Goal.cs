@@ -1,3 +1,3 @@
-﻿namespace UFit.Domain.Workouts;
+﻿namespace UFit.Domain.Shared;
 
 public sealed record Goal(string Value);

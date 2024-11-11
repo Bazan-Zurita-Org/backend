@@ -20,7 +20,7 @@ internal class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutComman
         var result = Workout.Create(
             new Domain.Shared.Name(request.Workout.Name),
             request.Workout.Date,
-            new Goal(request.Workout.Goal),
+            new Domain.Shared.Goal(request.Workout.Goal),
             request.Workout.DifficultyLevel);
 
         _workOutRepository.Add(result.Value);

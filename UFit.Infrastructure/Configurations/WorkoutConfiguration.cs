@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using UFit.Domain.Shared;
 using UFit.Domain.Workouts;
 
 namespace UFit.Infrastructure.Configurations;
