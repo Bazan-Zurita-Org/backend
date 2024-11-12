@@ -1,4 +1,5 @@
 ﻿using UFit.Domain.Abstractions;
+using UFit.Domain.Shared;
 
 namespace UFit.Domain.Trainees;
 

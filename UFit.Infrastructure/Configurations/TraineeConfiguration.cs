@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using UFit.Domain.Trainees;
+using UFit.Domain.Shared;
 
 namespace UFit.Infrastructure.Configurations;
 public class TraineeConfiguration : IEntityTypeConfiguration<Trainee>
