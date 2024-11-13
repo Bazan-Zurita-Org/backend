@@ -14,4 +14,11 @@ public sealed class Ranking : Entity
     public Guid TraineeId { get; private set; }
     public Points Points { get; private set; }
     public Rank Rank { get; private set; }
+
+    public static Result<Ranking> Create(Guid traineeId, Points points, Rank rank)
+    {
+        var ranking = new Ranking(Guid.NewGuid(), traineeId, points, rank);
+
+        return ranking;
+    }
 }

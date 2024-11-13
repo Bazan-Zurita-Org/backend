@@ -70,4 +70,9 @@ public sealed class Trainee : Entity
 
         return trainee;
     }
+
+    public void AddPoints(int newPoints)
+    {
+        Points += new Points(newPoints); 
+    }
 }
