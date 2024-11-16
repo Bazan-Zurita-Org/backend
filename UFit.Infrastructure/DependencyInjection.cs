@@ -9,6 +9,7 @@ using UFit.Application.Abstractions;
 using UFit.Application.Abstractions.Authentication;
 using UFit.Application.Abstractions.Cache;
 using UFit.Application.Abstractions.Data;
+using UFit.Domain.Challenges;
 using UFit.Domain.Trainees;
 using UFit.Domain.Workouts;
 using UFit.Infrastructure.Authentication;
@@ -74,5 +75,6 @@ public static class DependencyInjection
         services.AddScoped<ITraineeRepository, TraineeRepository>();
         services.AddScoped<IWorkoutRepository, WorkoutRepository>();
         services.AddScoped<IExerciseRepository, ExerciseRepository>();
+        services.AddScoped<IChallengeRepository, ChallengeRepository>();
     }
 }

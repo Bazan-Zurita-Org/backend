@@ -1,7 +1,7 @@
 ﻿namespace UFit.Domain.Workouts;
 public enum DifficultyLevel
 {
-    Beginner,
-    Intermediate,
-    Advanced
+    Beginner = 1,
+    Intermediate = 2,
+    Advanced = 3
 }
