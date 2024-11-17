@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Routing;
+using UFit.Application.Challenges.GetTraineeChallenges;
+using UFit.Application.Trainees.GetAll;
 using UFit.Application.Trainees.GetById;
 using UFit.Application.Trainees.Login;
 using UFit.Application.Trainees.Register;
@@ -51,5 +53,29 @@ public static class TraineeEndpoints
 
             return Results.Ok(result.Value);
         }).WithName("GetTraineeById");
+
+        app.MapGet("api/trainees/{id}/routine", async (Guid id, ISender sender) =>
+        {
+            var query = new GetRoutineQuery(id);
+            var result = await sender.Send(query);
+
+            return Results.Ok(result.Value);
+        });
+
+        app.MapGet("api/trainees/{id}/challenges", async (Guid id, ISender sender) =>
+        {
+            var query = new GetTraineeChallengesQuery(id);
+            var result = await sender.Send(query);
+
+            return Results.Ok(result.Value);
+        });
+
+        app.MapGet("api/trainees", async (ISender sender) =>
+        {
+            var query = new GetAllTraineesQuery();
+            var result = await sender.Send(query);
+
+            return result.Value;
+        });
     }
 }
