@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using UFit.Domain.Challenges;
 
 namespace UFit.Infrastructure.Repositories;
