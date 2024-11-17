@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UFit.Infrastructure;
@@ -11,9 +12,11 @@ using UFit.Infrastructure;
 namespace UFit.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241116230747_Add_Challenge_Entity")]
+    partial class Add_Challenge_Entity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,60 +182,6 @@ namespace UFit.Infrastructure.Migrations
                         .HasDatabaseName("ix_meals_diet_id");
 
                     b.ToTable("meals", (string)null);
-                });
-
-            modelBuilder.Entity("UFit.Domain.Duels.Duel", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<Guid>("ChallengeId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("challenge_id");
-
-                    b.Property<string>("ChallengeText")
-                        .HasColumnType("text")
-                        .HasColumnName("challenge_text");
-
-                    b.Property<Guid>("ChallengerId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("challenger_id");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("end_date");
-
-                    b.Property<Guid>("OpponentId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("opponent_id");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("start_date");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
-                        .HasColumnName("status");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer")
-                        .HasColumnName("type");
-
-                    b.HasKey("Id")
-                        .HasName("pk_duels");
-
-                    b.HasIndex("ChallengeId")
-                        .HasDatabaseName("ix_duels_challenge_id");
-
-                    b.HasIndex("ChallengerId")
-                        .HasDatabaseName("ix_duels_challenger_id");
-
-                    b.HasIndex("OpponentId")
-                        .HasDatabaseName("ix_duels_opponent_id");
-
-                    b.ToTable("duels", (string)null);
                 });
 
             modelBuilder.Entity("UFit.Domain.Trainees.Trainee", b =>
@@ -572,30 +521,6 @@ namespace UFit.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_meals_diets_diet_id");
-                });
-
-            modelBuilder.Entity("UFit.Domain.Duels.Duel", b =>
-                {
-                    b.HasOne("UFit.Domain.Challenges.Challenge", null)
-                        .WithMany()
-                        .HasForeignKey("ChallengeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_duels_challenges_challenge_id");
-
-                    b.HasOne("UFit.Domain.Trainees.Trainee", null)
-                        .WithMany()
-                        .HasForeignKey("ChallengerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_duels_trainees_challenger_id");
-
-                    b.HasOne("UFit.Domain.Trainees.Trainee", null)
-                        .WithMany()
-                        .HasForeignKey("OpponentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_duels_trainees_opponent_id");
                 });
 
             modelBuilder.Entity("UFit.Domain.Trainees.Trainee", b =>

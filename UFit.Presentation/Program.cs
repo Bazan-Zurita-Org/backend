@@ -9,6 +9,16 @@ builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -24,14 +34,18 @@ if (app.Environment.IsDevelopment())
     app.ApplyMigrations();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthentication();
+
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 
 app.AddTraineeApi();
 app.AddWorkoutEndpoints();
 app.AddExerciseEndpoints();
+app.AddChallengeEndpoints();
+app.AddDuelEndpoints();
 
 app.Run();

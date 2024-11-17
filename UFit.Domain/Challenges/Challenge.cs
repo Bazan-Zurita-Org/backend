@@ -6,7 +6,7 @@ namespace UFit.Domain.Challenges;
 
 public sealed class Challenge : Entity
 {
-    private readonly List<TraineeChallenge> _traineeChallenges = [];
+    private readonly List<TraineeChallenge> _traineeChallenges = new List<TraineeChallenge>();
     private Challenge() { }
     private Challenge(
         Guid id,
@@ -46,9 +46,20 @@ public sealed class Challenge : Entity
         return challenge;
     }
 
-    public void AddTraineeChallenge(Guid traineeId)
+    public TraineeChallenge AddTraineeChallenge(Guid traineeId)
     {
         var traineeChanllenge = new TraineeChallenge(Guid.NewGuid(), traineeId, Id, ChallengeStatus.Pending, null);
         _traineeChallenges.Add(traineeChanllenge);
+
+        return traineeChanllenge;
+    }
+
+    public void CompleteChallenge(Guid traineeChallengeId)
+    {
+        var traineeChallenge = _traineeChallenges.FirstOrDefault(tc => tc.Id == traineeChallengeId);
+
+        if (traineeChallenge is null) return;
+
+        traineeChallenge.CompleteChallenge();
     }
 }

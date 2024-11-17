@@ -21,4 +21,10 @@ public sealed class TraineeChallenge : Entity
     public Guid ChallengeId { get; private set; }
     public ChallengeStatus Status { get; private set; }
     public DateTime? CompletionDate { get; private set; }
+
+    internal void CompleteChallenge()
+    {
+        Status = ChallengeStatus.Completed;
+        CompletionDate = DateTime.UtcNow;
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UFit.Domain.Challenges;
 using UFit.Domain.Trainees;
 using UFit.Domain.Workouts;
 
@@ -10,4 +11,5 @@ public interface IApplicationDbContext
     DbSet<Workout> Workouts { get; set; }
     DbSet<Exercise> Exercises { get; set; }
     DbSet<WorkoutExercise> WorkoutExercises { get; set; }
+    DbSet<Challenge> Challenges { get; set; }
 }

@@ -1,16 +1,25 @@
-﻿using UFit.Domain.Challenges;
+using Microsoft.EntityFrameworkCore;
+using UFit.Domain.Challenges;
 
 namespace UFit.Infrastructure.Repositories;
 
-internal class ChallengeRepository : IChallengeRepository
+internal class ChallengeRepository(ApplicationDbContext context) : IChallengeRepository
 {
     public void Add(Challenge challenge)
     {
-        throw new NotImplementedException();
+        context.Set<Challenge>().Add(challenge);
     }
 
-    public Task<Challenge?> GetByIdAsync(Guid id)
+    public async Task<Challenge?> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        return await context.Set<Challenge>().Include(c => c.TraineeChallenges).FirstOrDefaultAsync(c => c.Id == id);
+    }
+
+    public async Task<Challenge?> GetByTraineeChallengeIdAsync(Guid traineeChallenge)
+    {
+        return await context.Set<Challenge>()
+            .Include(challenge => challenge.TraineeChallenges)
+            .Where(challenge => challenge.TraineeChallenges.Any(tc => tc.Id == traineeChallenge))
+            .FirstOrDefaultAsync();
     }
 }

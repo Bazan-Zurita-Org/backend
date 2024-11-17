@@ -9,13 +9,15 @@ internal sealed class AssignChallengeToTraineeCommandHandler : ICommandHandler<A
 {
     private readonly IChallengeRepository _challengeRepository;
     private readonly ITraineeRepository _traineeRepository;
+    private readonly ITraineeChallengeRepository _traineeChallengeRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public AssignChallengeToTraineeCommandHandler(IUnitOfWork unitOfWork, ITraineeRepository traineeRepository, IChallengeRepository challengeRepository)
+    public AssignChallengeToTraineeCommandHandler(IUnitOfWork unitOfWork, ITraineeRepository traineeRepository, IChallengeRepository challengeRepository, ITraineeChallengeRepository traineeChallengeRepository)
     {
         _unitOfWork = unitOfWork;
         _traineeRepository = traineeRepository;
         _challengeRepository = challengeRepository;
+        _traineeChallengeRepository = traineeChallengeRepository;
     }
 
     public async Task<Result> Handle(AssignChallengeToTraineeCommand request, CancellationToken cancellationToken)
@@ -34,7 +36,9 @@ internal sealed class AssignChallengeToTraineeCommandHandler : ICommandHandler<A
             return Result.Failure(ChallengeErrors.NotFound);
         }
 
-        challenge.AddTraineeChallenge(trainee.Id);
+        var traineeChallenge = challenge.AddTraineeChallenge(trainee.Id);
+
+        _traineeChallengeRepository.Add(traineeChallenge);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
