@@ -55,7 +55,7 @@ public static class TraineeEndpoints
             return Results.Ok(result.Value);
         }).WithName("GetTraineeById");
 
-        app.MapGet("api/trainee/{id}/routine", async (Guid id, ISender sender) =>
+        app.MapGet("api/trainees/{id}/routine", async (Guid id, ISender sender) =>
         {
             var query = new GetRoutineQuery(id);
             var result = await sender.Send(query);
