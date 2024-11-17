@@ -47,5 +47,6 @@ app.AddWorkoutEndpoints();
 app.AddExerciseEndpoints();
 app.AddChallengeEndpoints();
 app.AddDuelEndpoints();
+app.AddRankingEndpoints();
 
 app.Run();
