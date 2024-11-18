@@ -5,7 +5,7 @@ using UFit.Domain.Challenges;
 using UFit.Domain.Trainees;
 
 namespace UFit.Application.Challenges.AssignTrainee;
-internal sealed class AssignChallengeToTraineeCommandHandler : ICommandHandler<AssignChallengeToTraineeCommand>
+internal sealed class AssignChallengeToTraineeCommandHandler : ICommandHandler<AssignChallengeToTraineeCommand, Guid>
 {
     private readonly IChallengeRepository _challengeRepository;
     private readonly ITraineeRepository _traineeRepository;
@@ -20,20 +20,20 @@ internal sealed class AssignChallengeToTraineeCommandHandler : ICommandHandler<A
         _traineeChallengeRepository = traineeChallengeRepository;
     }
 
-    public async Task<Result> Handle(AssignChallengeToTraineeCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(AssignChallengeToTraineeCommand request, CancellationToken cancellationToken)
     {
         var trainee = await _traineeRepository.FindById(request.ChallengeTrainee.TraineeId);
 
         if (trainee is null)
         {
-            return Result.Failure(TraineeErrors.NotFound);
+            return Result.Failure<Guid>(TraineeErrors.NotFound);
         }
 
         var challenge = await _challengeRepository.GetByIdAsync(request.ChallengeTrainee.ChallengeId);
 
         if (challenge is null)
         {
-            return Result.Failure(ChallengeErrors.NotFound);
+            return Result.Failure<Guid>(ChallengeErrors.NotFound);
         }
 
         var traineeChallenge = challenge.AddTraineeChallenge(trainee.Id);
@@ -42,6 +42,6 @@ internal sealed class AssignChallengeToTraineeCommandHandler : ICommandHandler<A
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success();
+        return traineeChallenge.Id;
     }
 }

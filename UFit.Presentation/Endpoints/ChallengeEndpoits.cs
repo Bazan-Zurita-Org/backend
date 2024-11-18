@@ -18,7 +18,7 @@ public static class ChallengeEndpoits
                 return Results.BadRequest(result.Error);
             }
 
-            return Results.Created();
+            return Results.Ok(result.Value);
         });
 
         app.MapPost("api/challenges/complete", async (CompleteChallengeRequest request, ISender sender) =>

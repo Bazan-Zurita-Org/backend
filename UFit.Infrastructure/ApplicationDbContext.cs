@@ -2,6 +2,7 @@
 using UFit.Application.Abstractions;
 using UFit.Application.Abstractions.Data;
 using UFit.Domain.Challenges;
+using UFit.Domain.Duels;
 using UFit.Domain.Trainees;
 using UFit.Domain.Workouts;
 
@@ -15,6 +16,7 @@ public class ApplicationDbContext : DbContext, IUnitOfWork, IApplicationDbContex
     public DbSet<Exercise> Exercises { get; set; }
     public DbSet<WorkoutExercise> WorkoutExercises { get; set; }
     public DbSet<Challenge> Challenges { get; set; }
+    public DbSet<Duel> Duels { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
