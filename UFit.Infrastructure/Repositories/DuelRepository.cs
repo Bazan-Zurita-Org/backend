@@ -5,6 +5,11 @@ internal class DuelRepository(ApplicationDbContext context) : IDuelRepository
 {
     public void Add(Duel duel)
     {
-        throw new NotImplementedException();
+        context.Set<Duel>().Add(duel);
+    }
+
+    public async Task<Duel?> GetByIdAsync(Guid id)
+    {
+        return await context.Set<Duel>().FindAsync(id);
     }
 }

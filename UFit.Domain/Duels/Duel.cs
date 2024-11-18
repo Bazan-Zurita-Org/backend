@@ -46,4 +46,9 @@ public sealed class Duel : Entity
 
         return duel;
     }
+
+    public void Accept()
+    {
+        Status = DuelStatus.Accepted;
+    }
 }

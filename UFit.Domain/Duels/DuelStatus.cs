@@ -3,6 +3,7 @@
 public enum DuelStatus
 {
     Pending = 1,
-    Completed = 2,
-    Failed = 3
+    Accepted = 2,
+    Completed = 3,
+    Failed = 4
 }
