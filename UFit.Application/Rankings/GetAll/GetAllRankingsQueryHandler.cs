@@ -21,7 +21,7 @@ internal class GetAllRankingsQueryHandler : IQueryHandler<GetAllRankingsQuery, L
             .OrderByDescending(trainee => trainee.Points)
             .Select(trainee => new RankingsResponse(
                 trainee.Id,
-                $"{trainee.Name.First} ${trainee.Name.Last}",
+                $"{trainee.Name.First} {trainee.Name.Last}",
                 trainee.Points.Value))
             .ToListAsync();
 
