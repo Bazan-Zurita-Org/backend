@@ -30,6 +30,7 @@ internal sealed class GetRoutineQueryHandler : IQueryHandler<GetRoutineQuery, Ro
             .CreateRoutineAsync(
             workouts,
             trainee.Measurements.Weight,
+            trainee.Measurements.Height,
             trainee.Gender.Value,
             trainee.DateOfBirth,
             trainee.FitnessGoal.Value,

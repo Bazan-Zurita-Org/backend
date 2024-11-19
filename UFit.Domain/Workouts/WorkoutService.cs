@@ -4,6 +4,7 @@ public sealed class WorkoutService
     public List<Workout> CreateRoutineAsync(
         List<Workout> allWorkouts,
         decimal weight,
+        decimal heigth,
         string gender,
         DateOnly dateOfBirth,
         string fitnessGoal,
@@ -19,20 +20,43 @@ public sealed class WorkoutService
             _ => throw new Exception("Invalid goal")
         };
 
-        var workoutsByDifficulty = goalWorkouts
-            .Where(w => w.DifficultyLevel <= GetDifficultyLevel(weight, targetWeight, fitnessGoal, gender, age))
-            .ToList();
+        var difficultyLevel = GetDifficultyLevel(weight, heigth, targetWeight, fitnessGoal, gender, age);
 
+        var workoutsByDifficulty = goalWorkouts
+            .Where(w => w.DifficultyLevel <= difficultyLevel)
+            .ToList();
 
         return workoutsByDifficulty;
     }
 
-    // TODO generate algorithm to get the difficulty level
-    private static DifficultyLevel GetDifficultyLevel(decimal weight, decimal targetWeight, string fitnessGoal, string gender, int age)
+    private static DifficultyLevel GetDifficultyLevel(decimal weight, decimal height, decimal targetWeight, string fitnessGoal, string gender, int age)
     {
-        //if (fitnessGoal == "Aumentar masa muscular" && weight < targetWeight) return DifficultyLevel.Intermediate;
-        //if (fitnessGoal == "Bajar nivel de grasa" && weight > targetWeight) return DifficultyLevel.Intermediate;
-        return DifficultyLevel.Advanced;
+        // Calcular el índice de masa corporal (IMC)
+        decimal bmi = CalculateBMI(weight, height);
+
+        // Determinar el nivel de actividad física
+        var activityLevel = GetActivityLevel(age);
+
+        // Ajustar el nivel de dificultad según el objetivo de acondicionamiento físico
+        return fitnessGoal switch
+        {
+            "Aumentar masa muscular" => (bmi < 18.5m || activityLevel == "Bajo") ? DifficultyLevel.Beginner : DifficultyLevel.Intermediate,
+            "Bajar nivel de grasa" => (bmi >= 25m || activityLevel == "Bajo") ? DifficultyLevel.Beginner : DifficultyLevel.Intermediate,
+            "Mejorar la resistencia física" => (activityLevel == "Bajo") ? DifficultyLevel.Beginner : DifficultyLevel.Intermediate,
+            _ => DifficultyLevel.Advanced
+        };
     }
 
+    private static decimal CalculateBMI(decimal weight, decimal height)
+    {
+        return weight / (height * height);
+    }
+
+    private static string GetActivityLevel(int age)
+    {
+        // Nivel de actividad basado en la edad
+        if (age <= 30) return "Alto";
+        if (age <= 50) return "Medio";
+        return "Bajo";
+    }
 }
