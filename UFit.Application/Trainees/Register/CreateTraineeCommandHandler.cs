@@ -1,4 +1,5 @@
-﻿using UFit.Application.Abstractions;
+﻿using MediatR;
+using UFit.Application.Abstractions;
 using UFit.Application.Abstractions.Authentication;
 using UFit.Application.Abstractions.Messaging;
 using UFit.Domain.Abstractions;
@@ -10,12 +11,14 @@ internal sealed class CreateTraineeCommandHandler : ICommandHandler<CreateTraine
     private readonly ITraineeRepository _traineeRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IAuthenticationService _authenticationService;
+    private readonly IPublisher _publisher;
 
-    public CreateTraineeCommandHandler(ITraineeRepository traineeRepository, IUnitOfWork unitOfWork, IAuthenticationService authenticationService)
+    public CreateTraineeCommandHandler(ITraineeRepository traineeRepository, IUnitOfWork unitOfWork, IAuthenticationService authenticationService, IPublisher publisher)
     {
         _traineeRepository = traineeRepository;
         _unitOfWork = unitOfWork;
         _authenticationService = authenticationService;
+        _publisher = publisher;
     }
 
     public async Task<Result<Guid>> Handle(CreateTraineeCommand request, CancellationToken cancellationToken)
@@ -36,6 +39,10 @@ internal sealed class CreateTraineeCommandHandler : ICommandHandler<CreateTraine
         _traineeRepository.Add(result.Value);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        await _publisher.Publish(new TraineeCreatedDomainEvent(
+            result.Value.Id),
+            cancellationToken);
 
         return result.Value.Id;
     }

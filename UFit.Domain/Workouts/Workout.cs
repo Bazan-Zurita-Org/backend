@@ -11,25 +11,23 @@ public sealed class Workout : Entity
         Name name,
         DateTime date,
         Goal goal,
-        DifficultyLevel difficultyLevel,
-        bool isCompleted) : base(id)
+        DifficultyLevel difficultyLevel) 
+        : base(id)
     {
         Name = name;
         Date = date;
         Goal = goal;
         DifficultyLevel = difficultyLevel;
-        IsCompleted = isCompleted;
     }
     public Name Name { get; private set; }
     public DateTime Date { get; private set; }
     public Goal Goal { get; private set; }
     public DifficultyLevel DifficultyLevel { get; private set; }
-    public bool IsCompleted { get; private set; }
     public  IReadOnlyList<WorkoutExercise> WorkoutExercises => _workoutExercises.ToList();
 
     public static Result<Workout> Create(Name name, DateTime date, Goal goal, DifficultyLevel difficultyLevel)
     {
-        var workout = new Workout(Guid.NewGuid(), name, date, goal, difficultyLevel, false);
+        var workout = new Workout(Guid.NewGuid(), name, date, goal, difficultyLevel);
 
         workout.RaiseDomainEvent(new WorkoutCreatedDomainEvent(workout.Id));
 

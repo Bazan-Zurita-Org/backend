@@ -24,26 +24,20 @@ internal sealed class GetRoutineQueryHandler : IQueryHandler<GetRoutineQuery, Ro
 
         if (trainee is null) return Result.Failure<RoutineResponse>(TraineeErrors.NotFound);
 
-        var workouts = await _applicationDbContext.Workouts.Include(w => w.WorkoutExercises).ToListAsync();
+        var workoutsTrainee = _applicationDbContext.WorkoutTrainees.Where(wt => wt.TraineeId == trainee.Id);
 
-        var workoutsRoutine = _workoutService
-            .CreateRoutineAsync(
-            workouts,
-            trainee.Measurements.Weight,
-            trainee.Measurements.Height,
-            trainee.Gender.Value,
-            trainee.DateOfBirth,
-            trainee.FitnessGoal.Value,
-            trainee.TargetWeight.Value);
-
-        var workoutsResponse = workoutsRoutine
-            .Select(workout => new GetWorkoutByIdResponse(
+        var workoutsResponse = workoutsTrainee
+            .Join(
+            _applicationDbContext.Workouts,
+            (wt) => wt.WorkoutId,
+            (workout) => workout.Id,
+            (wt, workout) => new GetTraineeWorkoutsResponse(
                 workout.Id,
                 workout.Name.Value,
                 workout.Date,
                 workout.Goal.Value,
                 workout.DifficultyLevel,
-                workout.IsCompleted,
+                wt.IsCompleted,
                 _applicationDbContext.WorkoutExercises
                 .Where(we => we.WorkoutId == workout.Id)
                 .Join(
@@ -58,8 +52,8 @@ internal sealed class GetRoutineQueryHandler : IQueryHandler<GetRoutineQuery, Ro
                         e.RestTime,
                         e.Equipment.Value,
                         e.MuscleGroup.Value,
-                        e.Instructions.Value)).ToList()
-            )).ToList();
+                        e.Instructions.Value)).ToList()))
+            .ToList();
 
         var response = new RoutineResponse(workoutsResponse);
 

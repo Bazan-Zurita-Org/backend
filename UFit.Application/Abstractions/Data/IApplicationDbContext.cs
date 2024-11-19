@@ -14,4 +14,5 @@ public interface IApplicationDbContext
     DbSet<WorkoutExercise> WorkoutExercises { get; set; }
     DbSet<Challenge> Challenges { get; set; }
     DbSet<Duel> Duels { get; set; }
+    DbSet<WorkoutTrainee> WorkoutTrainees { get; set; }
 }

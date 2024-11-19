@@ -1,7 +1,7 @@
 ﻿namespace UFit.Domain.Workouts;
 public sealed class WorkoutService
 {
-    public List<Workout> CreateRoutineAsync(
+    public List<Workout> CreateRoutine(
         List<Workout> allWorkouts,
         decimal weight,
         decimal heigth,

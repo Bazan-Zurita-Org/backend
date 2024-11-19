@@ -9,7 +9,6 @@ public sealed record GetWorkoutByIdResponse(
     DateTime Date,
     string Goal,
     DifficultyLevel DifficultyLevel,
-    bool IsCompleted,
     List<ExerciseResponse> Exercises);
 
 

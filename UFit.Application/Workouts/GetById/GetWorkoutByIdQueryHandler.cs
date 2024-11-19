@@ -26,7 +26,6 @@ internal class GetWorkoutByIdQueryHandler : IQueryHandler<GetWorkoutByIdQuery, G
                 workout.Date,
                 workout.Goal.Value,
                 workout.DifficultyLevel,
-                workout.IsCompleted,
                 _applicationDbContext.WorkoutExercises
                 .Where(we => we.WorkoutId == workout.Id)
                 .Join(
