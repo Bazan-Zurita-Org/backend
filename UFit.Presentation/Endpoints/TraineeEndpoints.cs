@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Routing;
 using UFit.Application.Challenges.GetByTraineeId;
 using UFit.Application.Challenges.GetTraineeChallenges;
+using UFit.Application.Diets.GetAllDiets;
 using UFit.Application.Duels.GetByTrainee;
 using UFit.Application.Trainees.GetAll;
 using UFit.Application.Trainees.GetById;
@@ -95,6 +96,14 @@ public static class TraineeEndpoints
             var result = await sender.Send(query);
 
             if (result.IsFailure) return Results.NotFound(result.Error);
+
+            return Results.Ok(result.Value);
+        });
+
+        app.MapGet("api/trainees/{id}/diets", async (Guid id, ISender sender) =>
+        {
+            var query = new GetAllDietsQuery(id);
+            var result = await sender.Send(query);
 
             return Results.Ok(result.Value);
         });

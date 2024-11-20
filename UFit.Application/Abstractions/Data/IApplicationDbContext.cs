@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UFit.Domain.Challenges;
+using UFit.Domain.Diets;
 using UFit.Domain.Duels;
 using UFit.Domain.Trainees;
 using UFit.Domain.Workouts;
@@ -16,4 +17,6 @@ public interface IApplicationDbContext
     DbSet<Duel> Duels { get; set; }
     DbSet<WorkoutTrainee> WorkoutTrainees { get; set; }
     DbSet<TraineeChallenge> TraineeChallenges { get; set; }
+    DbSet<Diet> Diets { get; set; }
+    DbSet<DietTrainee> DietTrainees { get; set; }
 }

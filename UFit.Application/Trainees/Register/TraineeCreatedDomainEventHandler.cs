@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using UFit.Application.Abstractions;
 using UFit.Application.Abstractions.Data;
+using UFit.Domain.Diets;
 using UFit.Domain.Trainees;
 using UFit.Domain.Workouts;
 
-namespace UFit.Application.Exercises.Create;
+namespace UFit.Application.Trainees.Register;
 
 internal class TraineeCreatedDomainEventHandler(
     IApplicationDbContext context,
     WorkoutService workoutService,
-    IUnitOfWork unitOfWork) 
+    DietService dietService,
+    IUnitOfWork unitOfWork)
     : INotificationHandler<TraineeCreatedDomainEvent>
 {
     public async Task Handle(TraineeCreatedDomainEvent notification, CancellationToken cancellationToken)
@@ -40,7 +42,30 @@ internal class TraineeCreatedDomainEventHandler(
                 false));
         }
 
-        await context.WorkoutTrainees.AddRangeAsync(routineTrainees);
+        context.WorkoutTrainees.AddRange(routineTrainees);
+
+        var diets = await context.Diets.ToListAsync(cancellationToken);
+
+        var nutrialPlan = dietService.CreateDiet(
+            diets,
+            trainee.Measurements.Weight,
+            trainee.Measurements.Height,
+            trainee.Gender.Value,
+            trainee.DateOfBirth,
+            trainee.FitnessGoal.Value,
+            trainee.TargetWeight.Value);
+
+        List<DietTrainee> dietTrainees = [];
+
+        foreach (Diet diet in nutrialPlan)
+        {
+            dietTrainees.Add(new DietTrainee(
+                diet.Id,
+                trainee.Id,
+                false));
+        }
+
+         context.DietTrainees.AddRange(dietTrainees);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }
