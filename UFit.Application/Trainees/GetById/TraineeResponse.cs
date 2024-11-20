@@ -11,4 +11,6 @@ public sealed record TraineeResponse(
     DateOnly DateOfBirth,
     string Phone,
     string FitnessGoal,
-    decimal TargetWeigth);
+    decimal TargetWeigth,
+    int Points,
+    string IdentityId);

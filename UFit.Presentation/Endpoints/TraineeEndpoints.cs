@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Routing;
+using UFit.Application.Challenges.GetByTraineeId;
 using UFit.Application.Challenges.GetTraineeChallenges;
 using UFit.Application.Duels.GetByTrainee;
 using UFit.Application.Trainees.GetAll;
@@ -67,6 +68,14 @@ public static class TraineeEndpoints
         app.MapGet("api/trainees/{id}/challenges", async (Guid id, ISender sender) =>
         {
             var query = new GetTraineeChallengesQuery(id);
+            var result = await sender.Send(query);
+
+            return Results.Ok(result.Value);
+        });
+
+        app.MapGet("api/trainees/{id}/challenges/accepted", async (Guid id, ISender sender) =>
+        {
+            var query = new GetChallengesByTraineeIdQuery(id);
             var result = await sender.Send(query);
 
             return Results.Ok(result.Value);

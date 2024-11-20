@@ -18,8 +18,9 @@ public class ApplicationDbContext : DbContext, IUnitOfWork, IApplicationDbContex
     public DbSet<Challenge> Challenges { get; set; }
     public DbSet<Duel> Duels { get; set; }
     public DbSet<WorkoutTrainee> WorkoutTrainees { get; set; }
+    public DbSet<TraineeChallenge> TraineeChallenges { get; set; }
 
-protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         base.OnModelCreating(modelBuilder);

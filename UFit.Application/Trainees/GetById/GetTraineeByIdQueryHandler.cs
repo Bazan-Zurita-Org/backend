@@ -36,6 +36,8 @@ internal class GetTraineeByIdQueryHandler : IQueryHandler<GetTraineeByIdQuery, T
             trainee.DateOfBirth,
             trainee.Phone.Value,
             trainee.FitnessGoal.Value,
-            trainee.TargetWeight.Value);
+            trainee.TargetWeight.Value,
+            trainee.Points.Value,
+            trainee.IdentityId);
     }
 }

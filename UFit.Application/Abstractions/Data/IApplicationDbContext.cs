@@ -15,4 +15,5 @@ public interface IApplicationDbContext
     DbSet<Challenge> Challenges { get; set; }
     DbSet<Duel> Duels { get; set; }
     DbSet<WorkoutTrainee> WorkoutTrainees { get; set; }
+    DbSet<TraineeChallenge> TraineeChallenges { get; set; }
 }
